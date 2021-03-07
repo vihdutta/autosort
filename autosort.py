@@ -1,26 +1,29 @@
 import os
 import shutil
+import time
+from PyQt5.QtWidgets import QFileDialog
 from tkinter import Tk, filedialog
 from asfuncs import numgenerator, dstsort, filesnumrenamer, filesidrenamer
 
 ignoredirs = ('$RECYCLE.BIN', 'System Volume Information')
 metadata = False
 srcnames = []
+dstname = []
 srcfilesfound = []
 dstfilesfound = []
+renamerfilelist = []
 filelist = []
 
-# open file dialog box to choose folder
-root = Tk()
-root.withdraw()
-getsrc = filedialog.askdirectory(title='source')
-srcnames.append(getsrc)
-getsrc2 = filedialog.askdirectory(title='source')
-srcnames.append(getsrc2)
-dstname = filedialog.askdirectory(title='destination')
-
 # base of the copyfromallusbs() function
-def copyfromusb(metadata, replace, sortmethod):
+def copyfromusb(metadata, replace, sortmethod, dstname, console):
+    for srcname in srcnames:
+        for root, dirs, files in os.walk(srcname):
+            dirs[:] = [d for d in dirs if d not in ignoredirs]
+            for file in files:
+                filelist.append(file)
+    filelistlen1 = len(filelist)
+    filelistlen2 = len(filelist)
+
     for root, dirs, files in os.walk(dstname):
         for file in files:
             dstfilesfound.append(file)
@@ -44,25 +47,23 @@ def copyfromusb(metadata, replace, sortmethod):
                 else:
                     shutil.copy(os.path.join(root, file), os.path.join(dstname, srcrename))
                 dstfilesfound.append(srcrename)
-
-        if sortmethod == 1:
+                filelistlen1 -= 1
+                console.append(f'Copied file {file}. {filelistlen1} of {filelistlen2} files remaining.')
+        if sortmethod == 2:
             if not replace:
-                filesnumrenamer(dstname, srcfilesfound, dstfilesfound, filelist)
+                filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist)
             dstsort(dstname)
-            filelist.clear()
-
-    if sortmethod == 2:
+    if sortmethod == 1:
         if not replace:
-            filesnumrenamer(dstname, srcfilesfound, dstfilesfound, filelist)
+            filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist)
         dstsort(dstname)
-        filelist.clear()
-
     elif sortmethod == 0:
         if not replace:
-            filesnumrenamer(dstname, srcfilesfound, dstfilesfound, filelist)
+            filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist)
+    renamerfilelist.clear()
 
 
-copyfromusb(metadata=True, replace=False, sortmethod=2)
+#copyfromusb(metadata=True, replace=False, sortmethod=2)
 
 
 '''testing items'''

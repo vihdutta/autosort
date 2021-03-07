@@ -1,24 +1,24 @@
-from tkinter import Tk, filedialog
-from datetime import datetime
 import os
-from os.path import isfile, join
 import shutil
+from datetime import datetime
 from random import randint
 
-def filesnumrenamer(dstname, srcfilesfound, dstfilesfound, filelist):
+
+def filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist):
     filesidrenamer(dstname, srcfilesfound, dstfilesfound)
     files = os.listdir(dstname)
     for i, file in enumerate(files):
         name, extension = os.path.splitext(file) #error #1
         name = name.split('---', 1)[0]
-        filelist.append(name + '---')
-        fileamount = filelist.count(name + '---') - 1
+        renamerfilelist.append(name + '---')
+        fileamount = renamerfilelist.count(name + '---') - 1
         if fileamount > 0:
             iparentheses = '(' + str(fileamount) + ')'
         else:
             iparentheses = ''
         filerename = ''.join([name, iparentheses, extension])
         os.rename(os.path.join(dstname, file), os.path.join(dstname, filerename))
+
 
 def filesidrenamer(dstname, srcfilesfound, dstfilesfound):
     for root, dirs, files in os.walk(dstname):
@@ -35,6 +35,7 @@ def filesidrenamer(dstname, srcfilesfound, dstfilesfound):
                 except IndexError:
                     srcrename = file + num
             os.rename(os.path.join(dstname, file), os.path.join(dstname, srcrename))
+
 
 def dstsort(dstname):
     timenow = datetime.now().strftime('%H-%M-%S-%f')#[:-2]
