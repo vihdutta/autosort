@@ -15,7 +15,9 @@ renamerfilelist = []
 filelist = []
 
 # base of the copyfromallusbs() function
-def copyfromusb(metadata, replace, sortmethod, dstname, console):
+def copyfromdirs(metadata, replace, sortmethod, dstname):
+    filelist.clear()
+
     for srcname in srcnames:
         for root, dirs, files in os.walk(srcname):
             dirs[:] = [d for d in dirs if d not in ignoredirs]
@@ -48,7 +50,7 @@ def copyfromusb(metadata, replace, sortmethod, dstname, console):
                     shutil.copy(os.path.join(root, file), os.path.join(dstname, srcrename))
                 dstfilesfound.append(srcrename)
                 filelistlen1 -= 1
-                console.append(f'Copied file {file}. {filelistlen1} of {filelistlen2} files remaining.')
+                yield f'Copied {file}. {filelistlen1} of {filelistlen2} files remaining.'
         if sortmethod == 2:
             if not replace:
                 filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist)
@@ -60,11 +62,9 @@ def copyfromusb(metadata, replace, sortmethod, dstname, console):
     elif sortmethod == 0:
         if not replace:
             filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist)
+
     renamerfilelist.clear()
-
-
-#copyfromusb(metadata=True, replace=False, sortmethod=2)
-
+    
 
 '''testing items'''
 # tic = time.perf_counter()

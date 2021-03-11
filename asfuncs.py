@@ -44,13 +44,13 @@ def dstsort(dstname):
     files = [f for f in os.listdir(dstname) if os.path.isfile(os.path.join(dstname, f))]
     
     for file in files:
-        base, extension = os.path.splitext(file)
+        name, extension = os.path.splitext(file)
         newpath = f'{dstname}/{foldername}/{extension}'
         if not os.path.exists(newpath):
             os.makedirs(newpath)
-        shutil.move(os.path.join(dstname, file), f'{dstname}/{foldername}/{extension}/{base}{extension}') #error #2
+        shutil.move(os.path.join(dstname, file), os.path.join(dstname, foldername, extension, name+extension))
 
-
+#f'{dstname}/{foldername}/{extension}/{name}{extension}
 def numgenerator(srcfilesfound, dstfilesfound):
     i1 = len(srcfilesfound) + len(dstfilesfound)
     i2 = int(str(i1) + '0')

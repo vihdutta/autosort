@@ -1,10 +1,32 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from autosort import copyfromusb, srcnames
+from autosort import copyfromdirs, srcnames
+import threading
+import time
 
-destination = []
+class WorkerSignals(QtCore.QObject):
+	result = QtCore.pyqtSignal(object)
+
+class Worker(QtCore.QRunnable):
+    def __init__(self, metadata, replace, sortmethod, destdir):
+        super().__init__()
+        self.signals = WorkerSignals()
+        self.metadata = metadata
+        self.replace = replace
+        self.sortmethod = sortmethod
+        self.destdir = destdir
+
+    @QtCore.pyqtSlot()
+    def run(self):
+        copy = copyfromdirs(self.metadata, self.replace, self.sortmethod, self.destdir)
+        for statement in copy:
+            self.signals.result.emit(statement)
 
 class Ui_MainWindow(object):
+    def __init__(self, *args, **kwargs):
+        self.threadpool = QtCore.QThreadPool()
+        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(586, 444)
@@ -470,17 +492,21 @@ class Ui_MainWindow(object):
             nosourceerror.setWindowTitle('Error')
             nosourceerror.setText('Source directory field cannot be empty.')
             nosourceerror.setIcon(QMessageBox.Critical)
-            nosourceerror.exec()            
+            nosourceerror.exec_()
         try:
-            copyfromusb(metadata, replace, sortmethod, self.destdir, self.console)
+            worker = Worker(metadata, replace, sortmethod, self.destdir)
+            worker.signals.result.connect(self.statement_returner)
+            self.threadpool.start(worker)
         except AttributeError:
             nodestinationerror = QMessageBox()
             nodestinationerror.setWindowTitle('Error')
             nodestinationerror.setText('Destination directory field cannot be empty.')
             nodestinationerror.setIcon(QMessageBox.Critical)
-            nodestinationerror.exec()
-
-
+            nodestinationerror.exec_()
+        
+    def statement_returner(self, statement):
+        self.console.append(statement)
+        
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "autosort"))
