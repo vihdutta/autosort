@@ -23,35 +23,34 @@ def filesnumrenamer(dstname, srcfiles, dstfiles, idfilelist):
 def filesidrenamer(dstname, srcfiles, dstfiles):
     for root, dirs, files in os.walk(dstname):
         for file in os.listdir(dstname):
-            num = numgenerator(srcfiles, dstfiles)
+            num = createid(srcfiles, dstfiles)
             if '(' in file:
                 try:
-                    srcrename = file.split('(')[0] + num + file.split('(')[1]
+                    dstrename = file.split('(')[0] + num + file.split('(')[1]
                 except IndexError:
-                    srcrename = file + num 
+                    dstrename = file + num 
             else:
                 try:
-                    srcrename = file.split('.')[0] + num + '.' + file.split('.')[1]
+                    dstrename = file.split('.')[0] + num + '.' + file.split('.')[1]
                 except IndexError:
-                    srcrename = file + num
-            os.rename(os.path.join(dstname, file), os.path.join(dstname, srcrename))
+                    dstrename = file + num
+            os.rename(os.path.join(dstname, file), os.path.join(dstname, dstrename))
 
 
 def dstsort(dstname):
-    timenow = datetime.now().strftime('%H-%M-%S-%f')#[:-2]
-    foldername = f'autosort {timenow}'
-    makenewfolder = os.mkdir(f'{dstname}/{foldername}')
+    foldername = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
+    os.mkdir(os.path.join(dstname, foldername))
     files = [f for f in os.listdir(dstname) if os.path.isfile(os.path.join(dstname, f))]
     
     for file in files:
         name, extension = os.path.splitext(file)
-        newpath = f'{dstname}/{foldername}/{extension}'
+        newpath = os.path.join(dstname, foldername, extension)
         if not os.path.exists(newpath):
             os.makedirs(newpath)
         shutil.move(os.path.join(dstname, file), os.path.join(dstname, foldername, extension, name+extension))
 
-#f'{dstname}/{foldername}/{extension}/{name}{extension}
-def numgenerator(srcfiles, dstfiles):
+
+def createid(srcfiles, dstfiles):
     i1 = len(srcfiles) + len(dstfiles)
     i2 = int(str(i1) + '0')
     return '---' + str(randint(i1, i2))

@@ -1,7 +1,7 @@
 import os
 import shutil
 from PyQt5.QtWidgets import QFileDialog
-from asfuncs import numgenerator, dstsort, filesnumrenamer, filesidrenamer
+from asfuncs import createid, dstsort, filesnumrenamer, filesidrenamer
 
 ignoredirs = ('$RECYCLE.BIN', 'System Volume Information')
 metadata = False
@@ -34,18 +34,17 @@ def copyfromdirs(metadata, replace, sortmethod, dstname):
                 srcfiles.append(file)
             for file in files:
                 if not replace:
-                    num = numgenerator(srcfiles, dstfiles)
                     try:
-                        srcrename = file.split('.')[0] + num + '.' + file.split('.')[1]
+                        dstrename = file.split('.')[0] + createid(srcfiles, dstfiles) + '.' + file.split('.')[1]
                     except IndexError:
-                        srcrename = file + num
+                        dstrename = file + createid(srcfiles, dstfiles)
                 else:
-                    srcrename = file
+                    dstrename = file
                 if metadata:
-                    shutil.copy2(os.path.join(root, file), os.path.join(dstname, srcrename))
+                    shutil.copy2(os.path.join(root, file), os.path.join(dstname, dstrename))
                 else:
-                    shutil.copy(os.path.join(root, file), os.path.join(dstname, srcrename))
-                dstfiles.append(srcrename)
+                    shutil.copy(os.path.join(root, file), os.path.join(dstname, dstrename))
+                dstfiles.append(dstrename)
                 tempfilelistlen -= 1
                 yield f'Copied {file}. {tempfilelistlen} of {len(allsrcfiles)} files remaining.'
         if sortmethod == 2:
