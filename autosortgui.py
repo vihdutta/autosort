@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from autosort import copyfromdirs, srcnames
+from autosort import copyfromdirs, srcdirs
 import threading
 import time
 
 class WorkerSignals(QtCore.QObject):
-	result = QtCore.pyqtSignal(object)
+    result = QtCore.pyqtSignal(object)
 
 class Worker(QtCore.QRunnable):
     def __init__(self, metadata, replace, sortmethod, destdir):
@@ -18,8 +18,8 @@ class Worker(QtCore.QRunnable):
 
     @QtCore.pyqtSlot()
     def run(self):
-        copy = copyfromdirs(self.metadata, self.replace, self.sortmethod, self.destdir)
-        for statement in copy:
+        function = copyfromdirs(self.metadata, self.replace, self.sortmethod, self.destdir)
+        for statement in function:
             self.signals.result.emit(statement)
 
 class Ui_MainWindow(object):
@@ -466,7 +466,7 @@ class Ui_MainWindow(object):
     def source_button_click(self):
         sourcedir = QFileDialog.getExistingDirectory()
         self.sourcedisplay.setText(sourcedir)
-        srcnames.append(sourcedir)
+        srcdirs.append(sourcedir)
     
 
     def destination_button_click(self):
@@ -487,7 +487,7 @@ class Ui_MainWindow(object):
         replace = self.replace_button.isChecked()
         metadata = self.metadata_button.isChecked()
 
-        if not srcnames:
+        if not srcdirs:
             nosourceerror = QMessageBox()
             nosourceerror.setWindowTitle('Error')
             nosourceerror.setText('Source directory field cannot be empty.')

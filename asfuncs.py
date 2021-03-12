@@ -4,14 +4,14 @@ from datetime import datetime
 from random import randint
 
 
-def filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist):
-    filesidrenamer(dstname, srcfilesfound, dstfilesfound)
+def filesnumrenamer(dstname, srcfiles, dstfiles, idfilelist):
+    filesidrenamer(dstname, srcfiles, dstfiles)
     files = os.listdir(dstname)
     for i, file in enumerate(files):
         name, extension = os.path.splitext(file) #error #1
         name = name.split('---', 1)[0]
-        renamerfilelist.append(name + '---')
-        fileamount = renamerfilelist.count(name + '---') - 1
+        idfilelist.append(name + '---')
+        fileamount = idfilelist.count(name + '---') - 1
         if fileamount > 0:
             iparentheses = '(' + str(fileamount) + ')'
         else:
@@ -20,10 +20,10 @@ def filesnumrenamer(dstname, srcfilesfound, dstfilesfound, renamerfilelist):
         os.rename(os.path.join(dstname, file), os.path.join(dstname, filerename))
 
 
-def filesidrenamer(dstname, srcfilesfound, dstfilesfound):
+def filesidrenamer(dstname, srcfiles, dstfiles):
     for root, dirs, files in os.walk(dstname):
         for file in os.listdir(dstname):
-            num = numgenerator(srcfilesfound, dstfilesfound)
+            num = numgenerator(srcfiles, dstfiles)
             if '(' in file:
                 try:
                     srcrename = file.split('(')[0] + num + file.split('(')[1]
@@ -51,7 +51,7 @@ def dstsort(dstname):
         shutil.move(os.path.join(dstname, file), os.path.join(dstname, foldername, extension, name+extension))
 
 #f'{dstname}/{foldername}/{extension}/{name}{extension}
-def numgenerator(srcfilesfound, dstfilesfound):
-    i1 = len(srcfilesfound) + len(dstfilesfound)
+def numgenerator(srcfiles, dstfiles):
+    i1 = len(srcfiles) + len(dstfiles)
     i2 = int(str(i1) + '0')
     return '---' + str(randint(i1, i2))
