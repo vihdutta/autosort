@@ -26,15 +26,15 @@ def filesidrenamer(dstname, srcfiles, dstfiles):
             num = createid(srcfiles, dstfiles)
             if '(' in file:
                 try:
-                    dstrename = file.split('(')[0] + num + file.split('(')[1]
+                    fileider = file.split('(')[0] + num + file.split('(')[1]
                 except IndexError:
-                    dstrename = file + num 
+                    fileider = file + num 
             else:
                 try:
-                    dstrename = file.split('.')[0] + num + '.' + file.split('.')[1]
+                    fileider = file.split('.')[0] + num + '.' + file.split('.')[1]
                 except IndexError:
-                    dstrename = file + num
-            os.rename(os.path.join(dstname, file), os.path.join(dstname, dstrename))
+                    fileider = file + num
+            os.rename(os.path.join(dstname, file), os.path.join(dstname, fileider))
 
 
 def dstsort(dstname):

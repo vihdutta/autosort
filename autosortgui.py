@@ -465,8 +465,9 @@ class Ui_MainWindow(object):
 
     def source_button_click(self):
         sourcedir = QFileDialog.getExistingDirectory()
-        self.sourcedisplay.setText(sourcedir)
         srcdirs.append(sourcedir)
+        srcdirsstring = ', '.join(srcdirs)
+        self.sourcedisplay.setText(srcdirsstring)
     
 
     def destination_button_click(self):
