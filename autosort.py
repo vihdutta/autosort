@@ -1,7 +1,8 @@
 import os
 import shutil
-from PyQt5.QtWidgets import QFileDialog
-from asfuncs import createid, dstsort, filesnumrenamer, filesidrenamer, richtextforenl, richtextfore, plaintextfore, textback
+from datetime import datetime
+from asfuncs import (createid, dstsort, filesnumrenamer, filesidrenamer, 
+richtextforenl, richtextfore, plaintextfore, textback)
 
 ignoredirs = ('$RECYCLE.BIN', 'System Volume Information')
 
