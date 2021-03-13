@@ -47,8 +47,8 @@
        <enum>QFrame::Plain</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="6" column="2">
-        <widget class="QRadioButton" name="metadata_button">
+       <item row="5" column="2">
+        <widget class="QRadioButton" name="replace_button">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -93,28 +93,66 @@ QRadioButton:indicator:unchecked {
 }</string>
          </property>
          <property name="text">
-          <string>Preserve file metadata</string>
+          <string>Replace duplicate files</string>
          </property>
          <attribute name="buttonGroup">
           <string notr="true">nonExclusiveButtonGroup</string>
          </attribute>
         </widget>
        </item>
-       <item row="6" column="0">
-        <spacer name="left_spacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="9" column="2">
+        <widget class="QPushButton" name="run_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
+         <property name="minimumSize">
           <size>
-           <width>20</width>
-           <height>20</height>
+           <width>250</width>
+           <height>80</height>
           </size>
          </property>
-        </spacer>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI Light</family>
+           <pointsize>24</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+	color: rgb(255, 255, 255);
+	background-color: rgb(143, 129, 89);
+	border-radius: 20px;
+	text-align: center;
+}
+QPushButton:hover{	
+	background-color: rgb(168, 151, 105);
+}
+QPushButton:pressed{
+	background-color: rgb(116, 104, 72);
+}</string>
+         </property>
+         <property name="text">
+          <string>Run</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item row="8" column="2">
         <widget class="QPushButton" name="destination_button">
@@ -173,40 +211,8 @@ QPushButton:pressed{
          </property>
         </widget>
        </item>
-       <item row="9" column="3">
-        <spacer name="right_spacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="17" column="1">
         <spacer name="bottom_spacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="1">
-        <spacer name="top_spacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -276,6 +282,404 @@ QPushButton:pressed{
          <property name="flat">
           <bool>false</bool>
          </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QRadioButton" name="filesort_button">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI Light</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QRadioButton {
+	color: rgb(255, 255, 255);
+	background-color: rgb(143, 129, 89);
+	border-radius: 10px;
+	padding-left: 10px;
+}
+QRadioButton:hover{
+	background-color: rgb(168, 151, 105);
+}
+QRadioButton:pressed{
+	background-color: rgb(116, 104, 72);
+}
+QRadioButton:indicator {
+    width:                  10px;
+    height:                 10px;
+    border-radius:          7px;
+}
+QRadioButton:indicator:checked {
+    background-color: rgb(143, 129, 89);
+    border: 2px solid white;
+}
+QRadioButton:indicator:unchecked {
+	
+	background-color: rgb(255, 255, 255);
+    border: 2px solid white;
+}</string>
+         </property>
+         <property name="text">
+          <string>Sort each file type</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">nonExclusiveButtonGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>250</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QGroupBox{
+border-radius: 20px;
+}
+
+QComboBox QAbstractItemView {
+	border: 1px solid white;
+	outline: none;
+	color: rgb(255, 255, 255);
+	background-color: rgb(143, 129, 89);
+	selection-background-color: rgb(168, 151, 105);
+  }
+</string>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QComboBox" name="organization_box">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI Light</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QComboBox{
+	background-color: rgb(143, 129, 89);
+	color: rgb(255, 255, 255);
+	border-radius: 10px;
+	padding-left: 10px;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+    border-left-width: 1px;
+    border-left-color: white;
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+QComboBox::hover{
+	background-color: rgb(168, 151, 105);
+}</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>No organization</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>One folder organization</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Multi-folder organization</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <spacer name="left_spacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
+        <spacer name="top_spacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="16" column="1" colspan="2">
+        <widget class="QLineEdit" name="destinationdisplay">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI Light</family>
+           <pointsize>14</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+           <stylestrategy>PreferAntialias</stylestrategy>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(198, 208, 221);
+background-color: rgb(61, 63, 72);
+border-radius: 10px;
+padding-left: 10px;</string>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>32767</number>
+         </property>
+         <property name="cursorPosition">
+          <number>0</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Destination Directory</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="3">
+        <spacer name="right_spacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="15" column="1" colspan="2">
+        <widget class="QTextEdit" name="sourcedisplay">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI Light</family>
+           <pointsize>14</pointsize>
+           <italic>false</italic>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+           <stylestrategy>PreferAntialias</stylestrategy>
+           <kerning>true</kerning>
+          </font>
+         </property>
+         <property name="cursor" stdset="0">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(198, 208, 221);
+background-color: rgb(61, 63, 72);
+border-radius: 10px;
+padding-left: 10px;</string>
+         </property>
+         <property name="inputMethodHints">
+          <set>Qt::ImhNone</set>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="lineWidth">
+          <number>0</number>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QAbstractScrollArea::AdjustIgnored</enum>
+         </property>
+         <property name="lineWrapMode">
+          <enum>QTextEdit::NoWrap</enum>
+         </property>
+         <property name="lineWrapColumnOrWidth">
+          <number>0</number>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="cursorWidth">
+          <number>1</number>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::NoTextInteraction</set>
+         </property>
+         <property name="placeholderText">
+          <string>Source Directories</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QRadioButton" name="metadata_button">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI Light</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QRadioButton {
+	color: rgb(255, 255, 255);
+	background-color: rgb(143, 129, 89);
+	border-radius: 10px;
+	padding-left: 10px;
+}
+QRadioButton:hover{
+	background-color: rgb(168, 151, 105);
+}
+QRadioButton:pressed{
+	background-color: rgb(116, 104, 72);
+}
+QRadioButton:indicator {
+    width:                  10px;
+    height:                 10px;
+    border-radius:          7px;
+}
+QRadioButton:indicator:checked {
+    background-color: rgb(143, 129, 89);
+    border: 2px solid white;
+}
+QRadioButton:indicator:unchecked {
+	
+	background-color: rgb(255, 255, 255);
+    border: 2px solid white;
+}</string>
+         </property>
+         <property name="text">
+          <string>Disregard file metadata</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">nonExclusiveButtonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item row="2" column="1" rowspan="8">
@@ -466,410 +870,6 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
-        </widget>
-       </item>
-       <item row="15" column="1" colspan="2">
-        <widget class="QTextEdit" name="sourcedisplay">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Segoe UI Light</family>
-           <pointsize>14</pointsize>
-           <italic>false</italic>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-           <stylestrategy>PreferAntialias</stylestrategy>
-           <kerning>true</kerning>
-          </font>
-         </property>
-         <property name="cursor" stdset="0">
-          <cursorShape>ArrowCursor</cursorShape>
-         </property>
-         <property name="mouseTracking">
-          <bool>false</bool>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgb(198, 208, 221);
-background-color: rgb(61, 63, 72);
-border-radius: 10px;
-padding-left: 10px;</string>
-         </property>
-         <property name="inputMethodHints">
-          <set>Qt::ImhNone</set>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="lineWidth">
-          <number>0</number>
-         </property>
-         <property name="verticalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="sizeAdjustPolicy">
-          <enum>QAbstractScrollArea::AdjustIgnored</enum>
-         </property>
-         <property name="lineWrapMode">
-          <enum>QTextEdit::NoWrap</enum>
-         </property>
-         <property name="lineWrapColumnOrWidth">
-          <number>0</number>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="cursorWidth">
-          <number>1</number>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::NoTextInteraction</set>
-         </property>
-         <property name="placeholderText">
-          <string>Source Directories</string>
-         </property>
-        </widget>
-       </item>
-       <item row="16" column="1" colspan="2">
-        <widget class="QLineEdit" name="directorydisplay">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Segoe UI Light</family>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-           <stylestrategy>PreferAntialias</stylestrategy>
-          </font>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgb(198, 208, 221);
-background-color: rgb(61, 63, 72);
-border-radius: 10px;
-padding-left: 10px;</string>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="maxLength">
-          <number>32767</number>
-         </property>
-         <property name="cursorPosition">
-          <number>0</number>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-         <property name="placeholderText">
-          <string>Destination Directory</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>250</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QGroupBox{
-border-radius: 20px;
-}
-
-QComboBox QAbstractItemView {
-	border: 1px solid white;
-	outline: none;
-	color: rgb(255, 255, 255);
-	background-color: rgb(143, 129, 89);
-	selection-background-color: rgb(168, 151, 105);
-  }
-</string>
-         </property>
-         <property name="title">
-          <string/>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QComboBox" name="comboBox">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI Light</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QComboBox{
-	background-color: rgb(143, 129, 89);
-	color: rgb(255, 255, 255);
-	border-radius: 10px;
-	padding-left: 10px;
-}
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-    border-left-width: 1px;
-    border-left-color: white;
-    border-left-style: solid;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-}
-QComboBox::hover{
-	background-color: rgb(168, 151, 105);
-}</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>No organization</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>One folder organization</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Multi-folder organization</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="9" column="2">
-        <widget class="QPushButton" name="run_button">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>250</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Segoe UI Light</family>
-           <pointsize>24</pointsize>
-          </font>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton{
-	color: rgb(255, 255, 255);
-	background-color: rgb(143, 129, 89);
-	border-radius: 20px;
-	text-align: center;
-}
-QPushButton:hover{	
-	background-color: rgb(168, 151, 105);
-}
-QPushButton:pressed{
-	background-color: rgb(116, 104, 72);
-}</string>
-         </property>
-         <property name="text">
-          <string>Run</string>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QRadioButton" name="replace_button">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Segoe UI Light</family>
-           <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QRadioButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(143, 129, 89);
-	border-radius: 10px;
-	padding-left: 10px;
-}
-QRadioButton:hover{
-	background-color: rgb(168, 151, 105);
-}
-QRadioButton:pressed{
-	background-color: rgb(116, 104, 72);
-}
-QRadioButton:indicator {
-    width:                  10px;
-    height:                 10px;
-    border-radius:          7px;
-}
-QRadioButton:indicator:checked {
-    background-color: rgb(143, 129, 89);
-    border: 2px solid white;
-}
-QRadioButton:indicator:unchecked {
-	
-	background-color: rgb(255, 255, 255);
-    border: 2px solid white;
-}</string>
-         </property>
-         <property name="text">
-          <string>Replace duplicate files</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">nonExclusiveButtonGroup</string>
-         </attribute>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QRadioButton" name="filetype_button">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Segoe UI Light</family>
-           <pointsize>12</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-           <underline>false</underline>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QRadioButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(143, 129, 89);
-	border-radius: 10px;
-	padding-left: 10px;
-}
-QRadioButton:hover{
-	background-color: rgb(168, 151, 105);
-}
-QRadioButton:pressed{
-	background-color: rgb(116, 104, 72);
-}
-QRadioButton:indicator {
-    width:                  10px;
-    height:                 10px;
-    border-radius:          7px;
-}
-QRadioButton:indicator:checked {
-    background-color: rgb(143, 129, 89);
-    border: 2px solid white;
-}
-QRadioButton:indicator:unchecked {
-	
-	background-color: rgb(255, 255, 255);
-    border: 2px solid white;
-}</string>
-         </property>
-         <property name="text">
-          <string>Sort each file type</string>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">nonExclusiveButtonGroup</string>
-         </attribute>
         </widget>
        </item>
       </layout>
