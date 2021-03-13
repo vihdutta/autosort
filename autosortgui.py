@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QLabel
 from autosort import copyfromdirs, srcdirs
+import os
 import threading
 import time
 
@@ -25,7 +26,6 @@ class Worker(QtCore.QRunnable):
 class Ui_MainWindow(object):
     def __init__(self, *args, **kwargs):
         self.threadpool = QtCore.QThreadPool()
-        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -465,17 +465,23 @@ class Ui_MainWindow(object):
 
     def source_button_click(self):
         sourcedir = QFileDialog.getExistingDirectory()
-        srcdirs.append(sourcedir)
-        srcdirsstring = ', '.join(srcdirs)
-        self.sourcedisplay.setText(srcdirsstring)
+        if os.path.isdir(sourcedir):
+            srcdirs.append(sourcedir)
+            srcdirsstring = ', '.join(srcdirs)
+            self.sourcedisplay.setText(srcdirsstring)
+        else:
+            pass
     
 
     def destination_button_click(self):
         self.destdir = QFileDialog.getExistingDirectory()
-        self.destinationdisplay.setText(self.destdir)
-
+        if os.path.isdir(self.destdir):
+            self.destinationdisplay.setText(self.destdir)
+        else:
+            pass
 
     def run_button_click(self):
+        self.console.clear()
         organization = self.organization_box.currentText()
 
         if organization == 'One folder organization':
@@ -495,16 +501,23 @@ class Ui_MainWindow(object):
             nosourceerror.setIcon(QMessageBox.Critical)
             nosourceerror.exec_()
         try:
-            worker = Worker(metadata, replace, sortmethod, self.destdir)
-            worker.signals.result.connect(self.statement_returner)
-            self.threadpool.start(worker)
-        except AttributeError:
+            if os.path.isdir(self.destdir):
+                worker = Worker(metadata, replace, sortmethod, self.destdir)
+                worker.signals.result.connect(self.statement_returner)
+                self.threadpool.start(worker)
+            else:
+                nodestinationerror = QMessageBox()
+                nodestinationerror.setWindowTitle('Error')
+                nodestinationerror.setText('Destination directory field cannot be empty.')
+                nodestinationerror.setIcon(QMessageBox.Critical)
+                nodestinationerror.exec_()
+        except AttributeError: # if self.desdir hasn't been defined yet (user hasn't clicked the destination button)
             nodestinationerror = QMessageBox()
             nodestinationerror.setWindowTitle('Error')
             nodestinationerror.setText('Destination directory field cannot be empty.')
             nodestinationerror.setIcon(QMessageBox.Critical)
             nodestinationerror.exec_()
-        
+
     def statement_returner(self, statement):
         self.console.append(statement)
         

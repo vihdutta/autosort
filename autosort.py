@@ -1,17 +1,15 @@
 import os
 import shutil
 from PyQt5.QtWidgets import QFileDialog
-from asfuncs import createid, dstsort, filesnumrenamer, filesidrenamer
-import time
+from asfuncs import createid, dstsort, filesnumrenamer, filesidrenamer, richtextforenl, richtextfore, plaintextfore, textback
 
 ignoredirs = ('$RECYCLE.BIN', 'System Volume Information')
-metadata = False
 
+metadata = False
 srcdirs = []
 srcfiles = []
 dstfiles = []
 idfilelist = []
-allsrcfileslen = 0
 
 # base of the copyfromallusbs() function
 def copyfromdirs(metadata, replace, sortmethod, dstname):
@@ -21,7 +19,9 @@ def copyfromdirs(metadata, replace, sortmethod, dstname):
         for root, dirs, files in os.walk(srcdir):
             dirs[:] = [d for d in dirs if d not in ignoredirs]
             for file in files:
-                allsrcfileslen += 1 #allsrcfiles only used for the number of files, make += 1?
+                allsrcfileslen += 1
+    
+    yield f'{richtextfore}Discovered {allsrcfileslen} files in directory(s): {", ".join(srcdirs)}{textback}'
     tempallsrcfileslen = allsrcfileslen
 
     for root, dirs, files in os.walk(dstname):
@@ -29,11 +29,13 @@ def copyfromdirs(metadata, replace, sortmethod, dstname):
             dstfiles.append(file)
     
     for srcdir in srcdirs:
+        yield f'{richtextforenl}In directory {srcdir}{textback}'
+
         for root, dirs, files in os.walk(srcdir):
-            yield f'In directory {root}'
             dirs[:] = [d for d in dirs if d not in ignoredirs]
             for file in files:
                 srcfiles.append(file)
+
             for file in files:
                 if not replace:
                     try:
@@ -42,24 +44,35 @@ def copyfromdirs(metadata, replace, sortmethod, dstname):
                         fileider = file + createid(srcfiles, dstfiles)
                 else:
                     fileider = file
+
+                yield f'{plaintextfore}Copying "{file}"... {tempallsrcfileslen} of {allsrcfileslen} remain.{textback}'
+                tempallsrcfileslen -= 1
+
                 if metadata:
                     shutil.copy2(os.path.join(root, file), os.path.join(dstname, fileider))
                 else:
                     shutil.copy(os.path.join(root, file), os.path.join(dstname, fileider))
                 dstfiles.append(fileider)
-                tempallsrcfileslen -= 1
-                yield f'Copied "{file}" - {tempallsrcfileslen} of {allsrcfileslen} remain.'
+
         if sortmethod == 2:
             if not replace:
+                yield f'{richtextforenl}Enumerating...{textback}'
                 filesnumrenamer(dstname, srcfiles, dstfiles, idfilelist)
             dstsort(dstname)
+            yield f'{richtextfore}Finished{textback}'
+
     if sortmethod == 1:
         if not replace:
+            yield f'{richtextforenl}Enumerating...{textback}'
             filesnumrenamer(dstname, srcfiles, dstfiles, idfilelist)
         dstsort(dstname)
+        yield f'{richtextfore}Finished{textback}'
+
     elif sortmethod == 0:
         if not replace:
+            yield f'{richtextforenl}Enumerating...{textback}'
             filesnumrenamer(dstname, srcfiles, dstfiles, idfilelist)
+        yield f'{richtextfore}Finished{textback}'
 
     idfilelist.clear()
     

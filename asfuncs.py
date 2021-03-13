@@ -3,6 +3,10 @@ import shutil
 from datetime import datetime
 from random import randint
 
+richtextforenl = '<span style=\' font-family:"Segoe UI Light"; font-size:18pt; font-weight:400; color:#a89769;\' ><br>'
+richtextfore = '<span style=\' font-family:"Segoe UI Light"; font-size:18pt; font-weight:400; color:#a89769;\' >'
+plaintextfore = '<span style=\' font-family:"Segoe UI Light"; font-size:18pt; font-weight:400; color:#ffffff;\' >'
+textback = '</span>'
 
 def filesnumrenamer(dstname, srcfiles, dstfiles, idfilelist):
     filesidrenamer(dstname, srcfiles, dstfiles)
