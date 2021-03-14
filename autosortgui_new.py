@@ -9,17 +9,18 @@ import time
 class WorkerSignals(QtCore.QObject):
     result = QtCore.pyqtSignal(object)
 class Worker(QtCore.QRunnable):
-    def __init__(self, metadata, replace, sortmethod, destdir):
+    def __init__(self, metadata, replace, fcmethod, sort, destdir):
         super().__init__()
         self.signals = WorkerSignals()
         self.metadata = metadata
         self.replace = replace
-        self.sortmethod = sortmethod
+        self.fcmethod = fcmethod
+        self.sort = sort
         self.destdir = destdir
 
     @QtCore.pyqtSlot()
     def run(self):
-        function = copyfromdirs(self.metadata, self.replace, self.sortmethod, self.destdir)
+        function = copyfromdirs(self.metadata, self.replace, self.fcmethod, self.sort, self.destdir)
         for statement in function:
             self.signals.result.emit(statement)
 
@@ -523,15 +524,16 @@ class Ui_MainWindow(object):
         self.console.clear()
         organization = self.organization_box.currentText()
 
-        if organization == 'One folder organization':
-            sortmethod = 1
-        elif organization == 'Multi-folder organization':
-            sortmethod = 2
+        if organization == 'Single-folder creation':
+            fcmethod = 1
+        elif organization == 'Multi-folder creation':
+            fcmethod = 2
         else:
-            sortmethod = 0
+            fcmethod = 0
 
         replace = self.replace_button.isChecked()
         metadata = not self.metadata_button.isChecked()
+        sort = self.filesort_button.isChecked()
 
         if not srcdirs:
             nosourceerror = QMessageBox()
@@ -541,7 +543,7 @@ class Ui_MainWindow(object):
             nosourceerror.exec_()
         try:
             if os.path.isdir(self.destdir):
-                worker = Worker(metadata, replace, sortmethod, self.destdir)
+                worker = Worker(metadata, replace, fcmethod, sort, self.destdir)
                 worker.signals.result.connect(self.statement_returner)
                 self.threadpool.start(worker)
             else:
@@ -565,7 +567,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "autosort"))
-        self.metadata_button.setText(_translate("MainWindow", "Disregard file metadata"))
+        self.metadata_button.setText(_translate("MainWindow", "Remove file metadata"))
         self.destination_button.setText(_translate("MainWindow", "Destination"))
         self.source_button.setText(_translate("MainWindow", "Source"))
         self.console.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -575,9 +577,9 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:131073;\"><br /></p></body></html>"))
         self.sourcedisplay.setPlaceholderText(_translate("MainWindow", "Source Directories"))
         self.destinationdisplay.setPlaceholderText(_translate("MainWindow", "Destination Directory"))
-        self.organization_box.setItemText(0, _translate("MainWindow", "No organization"))
-        self.organization_box.setItemText(1, _translate("MainWindow", "One folder organization"))
-        self.organization_box.setItemText(2, _translate("MainWindow", "Multi-folder organization"))
+        self.organization_box.setItemText(0, _translate("MainWindow", "No folder creation"))
+        self.organization_box.setItemText(1, _translate("MainWindow", "Single-folder creation"))
+        self.organization_box.setItemText(2, _translate("MainWindow", "Multi-folder creation"))
         self.run_button.setText(_translate("MainWindow", "Run"))
         self.replace_button.setText(_translate("MainWindow", "Replace duplicate files"))
         self.filesort_button.setText(_translate("MainWindow", "Sort each file type"))
