@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" height="250" src="logo files/newlogor.ico">
+  <img width="250" height="250" src="newlogor.ico">
 </p>
 
 <h1 align="center">autosort</h1>
@@ -13,7 +13,7 @@
 </p>
 
 ## Preview  
-
+![demo gif](/gif/demo.gif)
 
 ## Installation
 
