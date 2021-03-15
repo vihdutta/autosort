@@ -13,11 +13,14 @@
 </p>
 
 ## Preview  
-![demo gif](/gif/demo.gif)
+
+<div align="center">
+  <img src="gif/demo.gif" alt="demo.gif" />
+</div>
 
 ## Installation
 
-Download the latest .exe from the releases section of https://github.com/vihdutta/autosort. Since the file is an .exe, your anti-virus may prevent you from running the file.
+Download the latest version of autosort from https://github.com/vihdutta/autosort/releases. Since autosort is an .exe, your anti-virus may prevent you from running autosort. Implementations to avoid this are being worked on.
 
 ## Usage
 

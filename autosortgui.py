@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QLabel
 from autosort import copyfromdirs, srcdirs
-import resources
+from asfuncs import richtextfore, textback
+import qtresources.resources
 import os
 import threading
 import time
@@ -507,7 +508,7 @@ class Ui_MainWindow(object):
         sourcedir = QFileDialog.getExistingDirectory()
         if os.path.isdir(sourcedir):
             srcdirs.append(sourcedir)
-            srcdirsstring = ', '.join(srcdirs)
+            srcdirsstring = f'{richtextfore}, {textback}'.join(srcdirs)
             self.sourcedisplay.setText(srcdirsstring)
         else:
             pass
