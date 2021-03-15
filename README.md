@@ -20,28 +20,28 @@
 
 ## Features
 
-### Low resource usage
+#### Low resource usage
 
 Autosort uses an average of **15mb** of RAM on startup. Even after heavy load, autosort averages below **30mb** of memory usage. Under heavy load, CPU usage is at an average of **10%**.
 
 ##### Resource usage benchmarks as of v1.0
 
 <div align="center">
-  <img src="media/startup_autosort.PNG">
+  <img src="media/startup_autosort.png">
   <h6>After startup.</h6>
-  <img src="media/copying_autosort.PNG">
+  <img src="media/copying_autosort.png">
   <h6>While copying 2,000x, 64kb files.</h6>
-  <img src="media/12000_autosort.PNG">
+  <img src="media/12000_autosort.png">
   <h6>After copying 2,000x, 64kb files 5x times (12,000 files total).</h6>
 </div>
 
-###### ***Performance depends mainly on system specifications. This benchmark was tested on a computer with the following specifications: Intel i7-4770, 16gb DDR3 RAM (1600mhz), Samsung SSD 860 EVO 1TB.**
+###### ***Performance depends mainly on system specifications. This benchmark was tested on a computer with these relevant specifications: Intel i7-4770, 16gb DDR3 RAM (1600mhz), Samsung SSD 860 EVO 1TB.**
 
-### Versatility
+#### Versatility
 
 Autosort has all dependencies bundled up into a single executable. This allows autosort to be a "plug-in-and-play" program and be used from even a flashdrive.
 
-### Realtime Progress Display
+#### Realtime Progress Display
 
 Autosort is configured with a terminal-like progress displayer eliminating the usage of inaccurate progress bars. The progress displayer presents exactly what operation the program is processing with almost no cost in performance.
 
