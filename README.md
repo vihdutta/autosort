@@ -18,9 +18,12 @@
   <img src="media/demo.gif" alt="demo.gif" />
 </div>
 
+## What is autosort?
+Autosort is a lightweight file-copying interface. It allows you to copy several directories to another folder while also having the ability to create folders for each file type, create folders for each source directory, and more! One of its distinct features is making sure files are copied without overriting each other by adding a (1), (2), (3), etc. If you want to have these features and more, download the single executable here: https://github.com/vihdutta/autosort/releases/latest
+
 ## Features
 
-#### Low resource usage
+### Low resource usage
 
 Autosort uses an average of **15mb** of RAM on startup. Even after heavy load, autosort averages below **30mb** of memory usage. Under heavy load, CPU usage is at an average of **10%**.
 
@@ -37,11 +40,11 @@ Autosort uses an average of **15mb** of RAM on startup. Even after heavy load, a
 
 ###### ***Performance depends mainly on system specifications. This benchmark was tested on a computer with these relevant specifications: Intel i7-4770, 16gb DDR3 RAM (1600mhz), Samsung SSD 860 EVO 1TB.**
 
-#### Versatility
+### Versatility
 
 Autosort has all dependencies bundled up into a single executable. This allows autosort to be a "plug-in-and-play" program and be used from even a flashdrive.
 
-#### Realtime Progress Display
+### Realtime Progress Display
 
 Autosort is configured with a terminal-like progress displayer eliminating the usage of inaccurate progress bars. The progress displayer presents exactly what operation the program is processing with almost no cost in performance.
 
@@ -51,7 +54,7 @@ Select the source directory (files you want to copy) and the destination directo
 
 ## Installation
 
-Download the latest version of autosort from https://github.com/vihdutta/autosort/releases. Since autosort is an .exe, your anti-virus may prevent you from running autosort. You may have to exclude autosort from your devices anti-virus software prior to usage.
+Download the latest version of autosort from https://github.com/vihdutta/autosort/releases/latest. Since autosort is an .exe, your anti-virus may prevent you from running autosort. You may have to exclude autosort from your anti-virus software prior to usage.
 
 ## Some Future Considerations
 
