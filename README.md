@@ -15,7 +15,7 @@
 ## Preview
 
 <div align="center">
-  <img src="media/demo.gif" alt="demo.gif" />
+  <img src="media/demos/demo.gif" alt="demo.gif" />
 </div>
 
 ## What is autosort?
@@ -30,11 +30,11 @@ Autosort uses an average of **15mb** of RAM on startup. Even after heavy load, a
 ##### Resource usage benchmarks as of v1.0
 
 <div align="center">
-  <img src="media/startup_autosort.png">
+  <img src="media/benchmarks/startup_autosort.png">
   <h6>After startup.</h6>
-  <img src="media/copying_autosort.png">
+  <img src="media/benchmarks/copying_autosort.png">
   <h6>While copying 2,000x, 64kb files.</h6>
-  <img src="media/12000_autosort.png">
+  <img src="media/benchmarks/12000_autosort.png">
   <h6>After copying 2,000x, 64kb files 5x times (12,000 files total).</h6>
 </div>
 
@@ -60,18 +60,17 @@ Download the latest version of autosort from https://github.com/vihdutta/autosor
 These all may or may not be implemented. Each box below may recieve a checkmark when they are being worked on, or have been acknowledged.
 
 - [x] Beautify README.md
-- [ ] Organize repository files
+- [x] Organize repository files
 - [ ] Decrease startup time
 - [ ] Reduce CPU usage while "Enumerating..."
 - [ ] Reduce time usage while "Enumerating..."
 - [x] Create a higher resolution demo gif
-- [ ] Increase readability and quality of code
+- [x] Increase readability and quality of code
 - [ ] Reduce CPU usage while moving GUI
 - [ ] Stop the user from pressing the run button while a process is already running
 - [ ] Research Hashlib
 - [ ] Research Pathlib
-- [ ] Use underscores with variable names.
-- [ ] Organize repository according to docs.
+- [x] Use underscores with variable names.
 - [ ] Use tests.
 - [ ] Split copyfromdirs()
-- [ ] Make fcmethod 1/2 more explicit.
+- [ ] Make fcmethods more explicit.
