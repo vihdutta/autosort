@@ -2,34 +2,34 @@ import os
 import shutil
 from datetime import datetime
 from asfuncs import (createid, dstsort, filesnumrenamer, 
-richtextforenl, richtextfore, plaintextfore, textback)
+RICH_TEXT_FORE_NL, RICH_TEXT_FORE, PLAIN_TEXT_FORE, TEXTBACK)
 
-ignoredirs = ('$RECYCLE.BIN', 'System Volume Information')
+IGNORE_DIRS = ('$RECYCLE.BIN', 'System Volume Information')
 
 metadata = False
 srcdirs = []
 srcfiles = []
 dstfiles = []
-idfilelist = []
+id_filelist = []
 
 # base of the copyfromallusbs() function
 def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
-    allsrcfileslen = 0
+    all_srcfiles_len = 0
 
     if fcmethod == 1:
-        foldername = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
-        os.mkdir(os.path.join(dstname, foldername))
+        folder_name = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
+        os.mkdir(os.path.join(dstname, folder_name))
     else:
         pass
 
     for srcdir in srcdirs:
         for root, dirs, files in os.walk(srcdir):
-            dirs[:] = [d for d in dirs if d not in ignoredirs]
+            dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
             for file in files:
-                allsrcfileslen += 1
+                all_srcfiles_len += 1
     
-    yield f'{richtextfore}Discovered {allsrcfileslen} files in directory(s): {", ".join(srcdirs)}{textback}'
-    tempallsrcfileslen = allsrcfileslen
+    yield f'{RICH_TEXT_FORE}Discovered {all_srcfiles_len} files in directory(s): {", ".join(srcdirs)}{TEXTBACK}'
+    temp_all_srcfiles_len = all_srcfiles_len
 
     for root, dirs, files in os.walk(dstname):
         for file in files:
@@ -37,67 +37,67 @@ def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
     
     for srcdir in srcdirs:
         if fcmethod == 2:
-            foldername = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
-            os.mkdir(os.path.join(dstname, foldername))
+            folder_name = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
+            os.mkdir(os.path.join(dstname, folder_name))
         else:
             pass
 
-        if 'foldername' in locals():
-            truepath = os.path.join(dstname, foldername)
+        if 'folder_name' in locals():
+            truepath = os.path.join(dstname, folder_name)
         else:
             truepath = dstname
 
-        yield f'{richtextforenl}In directory {srcdir}{textback}'
+        yield f'{RICH_TEXT_FORE_NL}In directory {srcdir}{TEXTBACK}'
 
         for root, dirs, files in os.walk(srcdir):
-            dirs[:] = [d for d in dirs if d not in ignoredirs]
+            dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
             for file in files:
                 srcfiles.append(file)
 
             for file in files:
                 if not replace:
                     try:
-                        fileider = file.split('.')[0] + createid(srcfiles, dstfiles) + '.' + file.split('.')[1]
+                        file_ider = file.split('.')[0] + createid(srcfiles, dstfiles) + '.' + file.split('.')[1]
                     except IndexError:
-                        fileider = file + createid(srcfiles, dstfiles)
+                        file_ider = file + createid(srcfiles, dstfiles)
                 else:
-                    fileider = file
+                    file_ider = file
 
-                yield f'{plaintextfore}Copying "{file}"... {tempallsrcfileslen} of {allsrcfileslen} remain.{textback}'
-                tempallsrcfileslen -= 1
+                yield f'{PLAIN_TEXT_FORE}Copying "{file}"... {temp_all_srcfiles_len} of {all_srcfiles_len} remain.{TEXTBACK}'
+                temp_all_srcfiles_len -= 1
                 
                 if metadata:
-                    shutil.copy2(os.path.join(root, file), os.path.join(truepath, fileider))
+                    shutil.copy2(os.path.join(root, file), os.path.join(truepath, file_ider))
                 else:
-                    shutil.copy(os.path.join(root, file), os.path.join(truepath, fileider))
-                dstfiles.append(fileider)
+                    shutil.copy(os.path.join(root, file), os.path.join(truepath, file_ider))
+                dstfiles.append(file_ider)
 
         if fcmethod == 2:
             if not replace:
-                yield f'{richtextforenl}Enumerating...{textback}'
-                filesnumrenamer(dstname, srcfiles, dstfiles, truepath, idfilelist)
+                yield f'{RICH_TEXT_FORE_NL}Enumerating...{TEXTBACK}'
+                filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist)
             if sort:
                 dstsort(dstname, truepath)
-            yield f'{richtextfore}Finished{textback}'
-            idfilelist.clear()
+            yield f'{RICH_TEXT_FORE}Finished{TEXTBACK}'
+            id_filelist.clear()
 
     if fcmethod == 1:
         if not replace:
-            yield f'{richtextforenl}Enumerating...{textback}'
-            filesnumrenamer(dstname, srcfiles, dstfiles, truepath, idfilelist)
+            yield f'{RICH_TEXT_FORE_NL}Enumerating...{TEXTBACK}'
+            filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist)
         if sort:
             dstsort(dstname, truepath)
-        yield f'{richtextfore}Finished{textback}'
+        yield f'{RICH_TEXT_FORE}Finished{TEXTBACK}'
 
     elif fcmethod == 0:
         if not replace:
-            yield f'{richtextforenl}Enumerating...{textback}'
-            filesnumrenamer(dstname, srcfiles, dstfiles, truepath, idfilelist)
+            yield f'{RICH_TEXT_FORE_NL}Enumerating...{TEXTBACK}'
+            filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist)
         if sort:
             dstsort(dstname, truepath)
-        yield f'{richtextfore}Finished{textback}'
+        yield f'{RICH_TEXT_FORE}Finished{TEXTBACK}'
 
-    idfilelist.clear()
+    id_filelist.clear()
     
 
 '''testing items'''

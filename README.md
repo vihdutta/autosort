@@ -57,14 +57,14 @@ Select the source directory (files you want to copy) and the destination directo
 Download the latest version of autosort from https://github.com/vihdutta/autosort/releases/latest. Since autosort is an executable file (.exe), your anti-virus may prevent you from running autosort. You may have to exclude autosort from your anti-virus software prior to usage.
 
 ## Some Future Considerations
-These all may or may not be implemented. Each may recieve a checkmark when they are being worked on or acknowledged.
+These all may or may not be implemented. Each box below may recieve a checkmark when they are being worked on, or have been acknowledged.
 
 - [x] Beautify README.md
 - [ ] Organize repository files
 - [ ] Decrease startup time
 - [ ] Reduce CPU usage while "Enumerating..."
 - [ ] Reduce time usage while "Enumerating..."
-- [ ] Create a higher resolution demo gif
+- [x] Create a higher resolution demo gif
 - [ ] Increase readability and quality of code
 - [ ] Reduce CPU usage while moving GUI
 - [ ] Stop the user from pressing the run button while a process is already running
