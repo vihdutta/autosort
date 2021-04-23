@@ -61,11 +61,11 @@ These all may or may not be implemented. Each box below may recieve a checkmark 
 
 - [x] Beautify README.md
 - [x] Organize repository files
+- [ ] Add meaningful comments
 - [ ] Decrease startup time
 - [ ] Reduce CPU usage while "Enumerating..."
 - [ ] Reduce time usage while "Enumerating..."
 - [x] Create a higher resolution demo gif
-- [x] Increase readability and quality of code
 - [ ] Reduce CPU usage while moving GUI
 - [ ] Stop the user from pressing the run button while a process is already running
 - [ ] Research Hashlib

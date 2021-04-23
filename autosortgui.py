@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QLabel
 from autosort import copyfromdirs, srcdirs
 from asfuncs import RICH_TEXT_FORE, TEXTBACK
-import qtresources.resources
+import qtfiles.qtresources.resources
 import os
 import threading
 import time
