@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QLabel
 from autosort import copyfromdirs, srcdirs
 from asfuncs import RICH_TEXT_FORE, TEXTBACK
@@ -26,6 +27,15 @@ class Worker(QtCore.QRunnable):
         for statement in function:
             self.signals.result.emit(statement)
 
+class CustomQTextEdit(QtWidgets.QTextEdit):
+    clicked = pyqtSignal()
+    def mouseReleaseEvent(self, event):
+        self.clicked.emit()
+
+class CustomQLineEdit(QtWidgets.QLineEdit):
+    clicked = pyqtSignal()
+    def mouseReleaseEvent(self, event):
+        self.clicked.emit()
 
 class Ui_MainWindow(object):
     def __init__(self, *args, **kwargs):
@@ -266,7 +276,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.console, 0, 0, 1, 1)
         self.scrollArea.setWidget(self.scrollAreaWidget)
         self.gridLayout_3.addWidget(self.scrollArea, 2, 1, 8, 1)
-        self.sourcedisplay = QtWidgets.QTextEdit(self.background)
+        self.sourcedisplay = CustomQTextEdit(self.background)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -304,7 +314,7 @@ class Ui_MainWindow(object):
         self.sourcedisplay.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)
         self.sourcedisplay.setObjectName("sourcedisplay")
         self.gridLayout_3.addWidget(self.sourcedisplay, 15, 1, 1, 2)
-        self.destinationdisplay = QtWidgets.QLineEdit(self.background)
+        self.destinationdisplay = CustomQLineEdit(self.background)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -510,16 +520,12 @@ class Ui_MainWindow(object):
             srcdirs.append(sourcedir)
             srcdirsstring = f'{RICH_TEXT_FORE}, {TEXTBACK}'.join(srcdirs)
             self.sourcedisplay.setText(srcdirsstring)
-        else:
-            pass
     
 
     def destination_button_click(self):
         self.destdir = QFileDialog.getExistingDirectory()
         if os.path.isdir(self.destdir):
             self.destinationdisplay.setText(self.destdir)
-        else:
-            pass
 
 
     def run_button_click(self):
@@ -565,6 +571,13 @@ class Ui_MainWindow(object):
     def statement_returner(self, statement):
         self.console.append(statement)
 
+    def sourcedisplay_clear(self):
+        self.sourcedisplay.clear()
+        srcdirs.clear()
+
+    def destinationdisplay_clear(self):
+        self.destinationdisplay.clear()
+        self.destdir = ''
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -589,6 +602,9 @@ class Ui_MainWindow(object):
         self.source_button.clicked.connect(self.source_button_click)
         self.destination_button.clicked.connect(self.destination_button_click)
         self.run_button.clicked.connect(self.run_button_click)
+
+        self.sourcedisplay.clicked.connect(self.sourcedisplay_clear)
+        self.destinationdisplay.clicked.connect(self.destinationdisplay_clear)
 
 
 if __name__ == "__main__":
