@@ -550,11 +550,11 @@ class Ui_MainWindow(object):
             nosourceerror.setIcon(QMessageBox.Critical)
             nosourceerror.exec_()
         try:
-            if os.path.isdir(self.destdir):
+            if os.path.isdir(self.destdir) and srcdirs:
                 worker = Worker(metadata, replace, fcmethod, sort, self.destdir)
                 worker.signals.result.connect(self.statement_returner)
                 self.threadpool.start(worker)
-            else:
+            elif not os.path.isdir(self.destdir):
                 nodestinationerror = QMessageBox()
                 nodestinationerror.setWindowTitle('Error')
                 nodestinationerror.setText('Destination directory field cannot be empty.')
