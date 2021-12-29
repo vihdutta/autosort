@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" height="250" src="newlogor.ico">
+  <img width="250" height="250" src="logo.ico">
 </p>
 
 <h1 align="center">autosort</h1>
@@ -38,7 +38,7 @@ Autosort uses an average of **15mb** of RAM on startup. Even after heavy load, a
   <h6>After copying 2,000x, 64kb files 5x times (12,000 files total).</h6>
 </div>
 
-###### ***Performance depends mainly on system specifications. This benchmark was tested on a computer with these relevant specifications: Intel i7-4770, 16gb DDR3 RAM (1600mhz), Samsung SSD 860 EVO 1TB.**
+###### ***Performance may be variable from system to system. This benchmark was tested on a computer with these relevant specifications: Intel i7-4770, 16gb DDR3 RAM (1600mhz), Samsung SSD 860 EVO 1TB.**
 
 ### Versatility
 
@@ -67,10 +67,9 @@ These all may or may not be implemented. Each box below may recieve a checkmark 
 - [ ] Reduce time usage while "Enumerating..."
 - [x] Create a higher resolution demo gif
 - [ ] Reduce CPU usage while moving GUI
-- [ ] Stop the user from pressing the run button while a process is already running
-- [ ] Research Hashlib
-- [ ] Research Pathlib
+- [x] Stop the user from pressing the run button while a process is already running
+- [x] Research Pathlib
 - [x] Use underscores with variable names.
 - [ ] Use tests.
 - [ ] Split copyfromdirs()
-- [ ] Make fcmethods more explicit.
+- [x] Make fcmethods more explicit.
