@@ -1,5 +1,6 @@
 import os
 import shutil
+from pathlib import Path, PurePath
 from datetime import datetime
 from asfuncs import (createid, dstsort, filesnumrenamer, 
 RICH_TEXT_FORE_NL, RICH_TEXT_FORE, PLAIN_TEXT_FORE, TEXTBACK)
@@ -16,11 +17,9 @@ id_filelist = []
 def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
     all_srcfiles_len = 0
 
-    if fcmethod == 1:
+    if fcmethod == 'Single-folder creation':
         folder_name = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
-        os.mkdir(os.path.join(dstname, folder_name))
-    else:
-        pass
+        Path(PurePath(dstname, folder_name).joinpath()).mkdir()
 
     for srcdir in srcdirs:
         for root, dirs, files in os.walk(srcdir):
@@ -36,14 +35,12 @@ def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
             dstfiles.append(file)
     
     for srcdir in srcdirs:
-        if fcmethod == 2:
+        if fcmethod == 'Multi-folder creation':
             folder_name = f'autosort {datetime.now().strftime("%H-%M-%S-%f")}'
-            os.mkdir(os.path.join(dstname, folder_name))
-        else:
-            pass
+            Path(PurePath(dstname, folder_name).joinpath()).mkdir()
 
         if 'folder_name' in locals():
-            truepath = os.path.join(dstname, folder_name)
+            truepath = PurePath(dstname, folder_name).joinpath()
         else:
             truepath = dstname
 
@@ -67,12 +64,12 @@ def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
                 temp_all_srcfiles_len -= 1
                 
                 if metadata:
-                    shutil.copy2(os.path.join(root, file), os.path.join(truepath, file_ider))
+                    shutil.copy2(PurePath(root, file).joinpath(), PurePath(truepath, file_ider).joinpath())
                 else:
-                    shutil.copy(os.path.join(root, file), os.path.join(truepath, file_ider))
+                    shutil.copy(PurePath(root, file).joinpath(), PurePath(truepath, file_ider).joinpath())
                 dstfiles.append(file_ider)
 
-        if fcmethod == 2:
+        if fcmethod == 'Multi-folder creation':
             if not replace:
                 yield f'{RICH_TEXT_FORE_NL}Enumerating...{TEXTBACK}'
                 filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist)
@@ -81,7 +78,7 @@ def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
             yield f'{RICH_TEXT_FORE}Finished{TEXTBACK}'
             id_filelist.clear()
 
-    if fcmethod == 1:
+    if fcmethod == 'Single-folder creation':
         if not replace:
             yield f'{RICH_TEXT_FORE_NL}Enumerating...{TEXTBACK}'
             filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist)
@@ -89,7 +86,7 @@ def copyfromdirs(metadata, replace, fcmethod, sort, dstname):
             dstsort(dstname, truepath)
         yield f'{RICH_TEXT_FORE}Finished{TEXTBACK}'
 
-    elif fcmethod == 0:
+    elif fcmethod == 'No folder creation':
         if not replace:
             yield f'{RICH_TEXT_FORE_NL}Enumerating...{TEXTBACK}'
             filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist)

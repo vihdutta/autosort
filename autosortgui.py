@@ -3,18 +3,16 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QLabel
 from autosort import copyfromdirs, srcdirs
 from asfuncs import RICH_TEXT_FORE, TEXTBACK
+from pathlib import Path
 import qtfiles.qtresources.resources
-import os
-import threading
-import time
-
 
 class WorkerSignals(QtCore.QObject):
     result = QtCore.pyqtSignal(object)
 class Worker(QtCore.QRunnable):
-    def __init__(self, metadata, replace, fcmethod, sort, destdir):
+    def __init__(self, run_button, metadata, replace, fcmethod, sort, destdir):
         super().__init__()
         self.signals = WorkerSignals()
+        self.run_button = run_button
         self.metadata = metadata
         self.replace = replace
         self.fcmethod = fcmethod
@@ -23,9 +21,11 @@ class Worker(QtCore.QRunnable):
 
     @QtCore.pyqtSlot()
     def run(self):
+        self.run_button.setEnabled(False)
         function = copyfromdirs(self.metadata, self.replace, self.fcmethod, self.sort, self.destdir)
         for statement in function:
             self.signals.result.emit(statement)
+        self.run_button.setEnabled(True)
 
 class CustomQTextEdit(QtWidgets.QTextEdit):
     clicked = pyqtSignal()
@@ -516,16 +516,16 @@ class Ui_MainWindow(object):
 
     def source_button_click(self):
         sourcedir = QFileDialog.getExistingDirectory()
-        if os.path.isdir(sourcedir):
+        if Path(sourcedir).is_dir() and sourcedir != '':
             srcdirs.append(sourcedir)
             srcdirsstring = f'{RICH_TEXT_FORE}, {TEXTBACK}'.join(srcdirs)
             self.sourcedisplay.setText(srcdirsstring)
-    
+
 
     def destination_button_click(self):
+        # bug: if user has selected destdir before then presses cancel on destdir file dialog.
         self.destdir = QFileDialog.getExistingDirectory()
-        if os.path.isdir(self.destdir):
-            self.destinationdisplay.setText(self.destdir)
+        self.destinationdisplay.setText(self.destdir)
 
 
     def run_button_click(self):
@@ -533,11 +533,11 @@ class Ui_MainWindow(object):
         organization = self.organization_box.currentText()
 
         if organization == 'Single-folder creation':
-            fcmethod = 1
+            fcmethod = 'Single-folder creation'
         elif organization == 'Multi-folder creation':
-            fcmethod = 2
+            fcmethod = 'Multi-folder creation'
         else:
-            fcmethod = 0
+            fcmethod = 'No folder creation'
 
         replace = self.replace_button.isChecked()
         metadata = not self.metadata_button.isChecked()
@@ -550,17 +550,17 @@ class Ui_MainWindow(object):
             nosourceerror.setIcon(QMessageBox.Critical)
             nosourceerror.exec_()
         try:
-            if os.path.isdir(self.destdir) and srcdirs:
-                worker = Worker(metadata, replace, fcmethod, sort, self.destdir)
+            if Path(self.destdir).is_dir() and srcdirs:
+                worker = Worker(self.run_button, metadata, replace, fcmethod, sort, self.destdir)
                 worker.signals.result.connect(self.statement_returner)
                 self.threadpool.start(worker)
-            elif not os.path.isdir(self.destdir):
+            elif not Path(self.destdir).is_dir() or self.destdir == '':
                 nodestinationerror = QMessageBox()
                 nodestinationerror.setWindowTitle('Error')
                 nodestinationerror.setText('Destination directory field cannot be empty.')
                 nodestinationerror.setIcon(QMessageBox.Critical)
                 nodestinationerror.exec_()
-        except AttributeError: # if self.desdir hasn't been defined yet (user hasn't clicked the destination button)
+        except (AttributeError, TypeError): # if self.desdir hasn't been defined yet (user hasn't clicked the destination button)
             nodestinationerror = QMessageBox()
             nodestinationerror.setWindowTitle('Error')
             nodestinationerror.setText('Destination directory field cannot be empty.')
@@ -571,13 +571,16 @@ class Ui_MainWindow(object):
     def statement_returner(self, statement):
         self.console.append(statement)
 
+
     def sourcedisplay_clear(self):
         self.sourcedisplay.clear()
         srcdirs.clear()
 
+
     def destinationdisplay_clear(self):
         self.destinationdisplay.clear()
-        self.destdir = ''
+        self.destdir = False
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -610,7 +613,7 @@ class Ui_MainWindow(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(":/icons/newlogor.ico"))
+    app.setWindowIcon(QtGui.QIcon(":/icons/logo.ico"))
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)

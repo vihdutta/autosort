@@ -1,6 +1,6 @@
 import os
 import shutil
-from datetime import datetime
+from pathlib import Path, PurePath
 from random import randint
 
 RICH_TEXT_FORE_NL = '<span style=\' font-family:"Segoe UI Light"; font-size:18pt; font-weight:400; color:#a89769;\' ><br>'
@@ -11,8 +11,8 @@ TEXTBACK = '</span>'
 def filesnumrenamer(dstname, srcfiles, dstfiles, truepath, id_filelist):
     filesidrenamer(dstname, srcfiles, dstfiles, truepath)
 
-    for i, file in enumerate(os.listdir(truepath)):
-        name, extension = os.path.splitext(file) #error #1
+    for file in Path(truepath).iterdir():
+        name, extension = PurePath(file).stem, PurePath(file).suffix #error #1
         name = name.split('---', 1)[0]
         id_filelist.append(name + '---' + extension)
         fileamount = id_filelist.count(name + '---' + extension) - 1
@@ -45,11 +45,14 @@ def filesidrenamer(dstname, srcfiles, dstfiles, truepath):
 def dstsort(dstname, truepath):
     files = [f for f in os.listdir(truepath) if os.path.isfile(os.path.join(truepath, f))]
     for file in files:
-        name, extension = os.path.splitext(file)
-        new_path = os.path.join(truepath, extension)
-        if not os.path.exists(new_path):
-            os.makedirs(new_path)
-        shutil.move(os.path.join(truepath, file), os.path.join(truepath, extension, name+extension))
+        name, extension = PurePath(file).stem, PurePath(file).suffix
+        new_dir = PurePath(truepath, extension).joinpath()
+        if not Path(new_dir).exists():
+            Path(new_dir).mkdir()
+        filename = name + extension
+        old_path = Path(truepath) / file
+        new_path = Path(truepath) / extension / filename
+        shutil.move(old_path, new_path)
 
 
 def createid(srcfiles, dstfiles):

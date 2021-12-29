@@ -6,7 +6,7 @@ block_cipher = None
 a = Analysis(['autosortgui.py'],
              pathex=['C:\\Users\\Duttas\\Desktop\\autosort'],
              binaries=[],
-             datas=[('newlogor.ico', '.')],
+             datas=[('logo.ico', '.')],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -30,4 +30,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False , icon='newlogor.ico')
+          console=False , icon='logo.ico')
