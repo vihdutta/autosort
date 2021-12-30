@@ -1,28 +1,32 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QLabel
-from autosort import copyfromdirs, srcdirs
-from asfuncs import RICH_TEXT_FORE, TEXTBACK
+from autosort import copy_from_dirs
+from asfuncs import RICH_TEXTFORE, TEXTBACK
 from pathlib import Path
 import qtfiles.qtresources.resources
+
+srcdirs = []
+dstdir = ""
 
 class WorkerSignals(QtCore.QObject):
     result = QtCore.pyqtSignal(object)
 class Worker(QtCore.QRunnable):
-    def __init__(self, run_button, metadata, replace, fcmethod, sort, destdir):
+    def __init__(self, run_button, srcdirs, dstdir, fcmethod, sort, metadata, replace):
         super().__init__()
         self.signals = WorkerSignals()
         self.run_button = run_button
-        self.metadata = metadata
-        self.replace = replace
+        self.srcdirs = srcdirs
+        self.dstdir = dstdir
         self.fcmethod = fcmethod
         self.sort = sort
-        self.destdir = destdir
+        self.metadata = metadata
+        self.replace = replace
 
     @QtCore.pyqtSlot()
     def run(self):
         self.run_button.setEnabled(False)
-        function = copyfromdirs(self.metadata, self.replace, self.fcmethod, self.sort, self.destdir)
+        function = copy_from_dirs(self.srcdirs, self.dstdir, self.fcmethod, self.sort, self.metadata, self.replace)
         for statement in function:
             self.signals.result.emit(statement)
         self.run_button.setEnabled(True)
@@ -515,17 +519,17 @@ class Ui_MainWindow(object):
 
 
     def source_button_click(self):
-        sourcedir = QFileDialog.getExistingDirectory()
-        if Path(sourcedir).is_dir() and sourcedir != '':
-            srcdirs.append(sourcedir)
-            srcdirsstring = f'{RICH_TEXT_FORE}, {TEXTBACK}'.join(srcdirs)
+        srcdir = QFileDialog.getExistingDirectory()
+        if Path(srcdir).is_dir() and srcdir != '':
+            srcdirs.append(srcdir)
+            srcdirsstring = f'{RICH_TEXTFORE}, {TEXTBACK}'.join(srcdirs)
             self.sourcedisplay.setText(srcdirsstring)
 
 
     def destination_button_click(self):
-        # bug: if user has selected destdir before then presses cancel on destdir file dialog.
-        self.destdir = QFileDialog.getExistingDirectory()
-        self.destinationdisplay.setText(self.destdir)
+        # bug: if user has selected dstdir before then presses cancel on dstdir file dialog.
+        self.dstdir = QFileDialog.getExistingDirectory()
+        self.destinationdisplay.setText(self.dstdir)
 
 
     def run_button_click(self):
@@ -550,11 +554,11 @@ class Ui_MainWindow(object):
             nosourceerror.setIcon(QMessageBox.Critical)
             nosourceerror.exec_()
         try:
-            if Path(self.destdir).is_dir() and srcdirs:
-                worker = Worker(self.run_button, metadata, replace, fcmethod, sort, self.destdir)
+            if Path(self.dstdir).is_dir() and srcdirs:
+                worker = Worker(self.run_button, srcdirs, self.dstdir, fcmethod, sort, metadata, replace)
                 worker.signals.result.connect(self.statement_returner)
                 self.threadpool.start(worker)
-            elif not Path(self.destdir).is_dir() or self.destdir == '':
+            elif not Path(self.dstdir).is_dir() or self.dstdir == '':
                 nodestinationerror = QMessageBox()
                 nodestinationerror.setWindowTitle('Error')
                 nodestinationerror.setText('Destination directory field cannot be empty.')
@@ -579,7 +583,7 @@ class Ui_MainWindow(object):
 
     def destinationdisplay_clear(self):
         self.destinationdisplay.clear()
-        self.destdir = False
+        self.dstdir = False
 
 
     def retranslateUi(self, MainWindow):
